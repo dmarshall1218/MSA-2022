@@ -45,7 +45,8 @@ total_cost = cost_of_labor + cost_of_paint
 
 #OUTPUT
 #Print hours of labor, cost of labor, amount of paint, 
-print(f"Hours of labor: {hours_of_labor}\nCost of labor: {cost_of_labor}\nAmount of paint (gallons): {gallons_of_paint}")
+print("\nReport\n-------------------")
+print(f"Hours of labor: {hours_of_labor:.2f}\nCost of labor: ${cost_of_labor:.2f}\nAmount of paint (gallons): {gallons_of_paint:.2f}")
 
 #cost of paint, total job cost
-print(f"Cost of paint: {cost_of_paint}\nTotal job cost: {total_cost}")
+print(f"Cost of paint: ${cost_of_paint:.2f}\nTotal job cost: $9{total_cost:.2f}")
