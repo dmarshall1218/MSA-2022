@@ -23,6 +23,13 @@ while(loop2):
     #Math
     volume = height * radius**2 * math.pi
     print(f"\nThe volume of the cylinder is: {volume}")
-    run_again = input("Would you like to perform another calculation? (Please input \"y\" for yes and \"n\" for no) ")
-    if (run_again == "n"):
-        loop2 = False
+    extra = True
+    while (extra):
+        run_again = input("Would you like to perform another calculation? (Please input \"y\" for yes and \"n\" for no) ")
+        if (run_again == "n"):
+            loop2 = False
+            extra = False
+        elif (run_again == "y"):
+            extra = False
+        else:
+            print("Please enter \"y\" for yes and \"n\" for no")
