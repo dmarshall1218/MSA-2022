@@ -1,6 +1,20 @@
 #print the menu
 from ast import While
 
+def validate_number(prompt):
+    run_again = True
+    while(run_again):
+        try:
+            user_input = float(input(prompt))
+            if(user_input <= 0):
+                print("ERROR: Value must be a positive number.\n")
+                continue
+        except:
+            print("ERROR: Input must be a number.\n")
+        else:
+            run_again = False
+
+    return user_input
 
 print("Select option from Menu\n-----------------------")
 print("1. Login")
@@ -76,14 +90,30 @@ elif user_option == "2":
 # - and move on
 #If not valid re prompt user
 #Create 3 empty lists for the student's data
-number_students = int(input("How many students do you have? "))
+number_students = int(validate_number("How many students do you have?"))
 student_name = []
 student_score = []
 student_grade = []
 for x in range (number_students):
     student_name.append(input("What is the name of your student? "))
-    student_score.append(input("What is the score of your student (percent)? "))
+    student_score.append(validate_number("What is the grade of your student (percent)? "))
 
+print("\n")
+
+for grade in student_score:
+    if grade >= 90:
+        student_grade.append("A")
+    elif grade >= 80:
+        student_grade.append("B")
+    elif grade >= 70:
+        student_grade.append("C")
+    elif grade >= 60:
+        student_grade.append("D")
+    else:
+        student_grade.append("F")
+
+for x in range (number_students):
+    print(f"{student_name[x]}: {student_score[x]}%, {student_grade[x]}")
 #Ask user how many students to enter data for
 #prompt user to enter student name and number score
 #store data somewhere
