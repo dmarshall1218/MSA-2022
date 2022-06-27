@@ -112,8 +112,14 @@ for grade in student_score:
     else:
         student_grade.append("F")
 
+class_total = 0
+
 for x in range (number_students):
     print(f"{student_name[x]}: {student_score[x]}%, {student_grade[x]}")
+    class_total = class_total + student_score[x]
+
+class_average = class_total / number_students
+print(f"Class average = {class_average}%")
 #Ask user how many students to enter data for
 #prompt user to enter student name and number score
 #store data somewhere
