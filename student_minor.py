@@ -16,50 +16,52 @@ def validate_number(prompt):
 
     return user_input
 
-print("Select option from Menu\n-----------------------")
-print("1. Login")
-print("2. Create User")
+def print_main_menu():
+    print("Select option from Menu\n-----------------------")
+    print("1. Login")
+    print("2. Create User")
 
-#prompt and get the option the user selected
-while True:
-    user_option = input("Would you like to (1) login or (2)create account? ")
-    #Ensure the user entered a valid option (1 or 2)
-    if user_option != "1" and user_option != "2":
-        # -if not, prompt user again
-        print("\nERROR: Enter a 1 or 2")
-        continue
-    else:
-        break     
-
-
-if user_option == "1":
+def get_user_option():
     while True:
-        #If user chose 1, ask for user name and password and
-        user_name = input("Please enter your user name: ")
-        user_pass = input("Please enter your password: ")
-        # - validate username and password combination in the users.txt file
-        #open the users files
-        user_file = open("users.txt", "r")
-        user_found = False
+            user_option = input("Would you like to (1) login or (2)create account? ")
+            #Ensure the user entered a valid option (1 or 2)
+            if user_option != "1" and user_option != "2":
+                # -if not, prompt user again
+                print("\nERROR: Enter a 1 or 2")
+                continue
+            else:
+                break     
+    return user_option
 
-        #read the lines from the file
-        for line in user_file:
-            credentials = line.split(", ")
-             #compare username and password for a match
-            if user_name == credentials[0] and user_pass == credentials[1].rstrip():
-                user_found = True
+def main():
+    print_main_menu()
+    user_option = get_user_option()
+
+    if user_option == "1":
+        while True:
+            #If user chose 1, ask for user name and password and
+            user_name = input("Please enter your user name: ")
+            user_pass = input("Please enter your password: ")
+            # - validate username and password combination in the users.txt file
+            #open the users files
+            user_file = open("users.txt", "r")
+            user_found = False
+
+            #read the lines from the file
+            for line in user_file:
+                credentials = line.split(", ")
+                #compare username and password for a match
+                if user_name == credentials[0] and user_pass == credentials[1].rstrip():
+                    user_found = True
+                    break
+
+            if user_found:
+                # - if valid then move on to prompt for student data
+                print(f"User {user_name} successfully logged in!\n")
                 break
-
-        if user_found:
-            # - if valid then move on to prompt for student data
-            print(f"User {user_name} successfully logged in!\n")
-            break
-        else:
-            # - if not valid combination reprompt the user. 
-            print(f"User {user_name} not found!\n")
-        
-       
-        
+            else:
+                # - if not valid combination reprompt the user. 
+                print(f"User {user_name} not found!\n")
         
 
 #If user chose 2, ask for user name and password and
