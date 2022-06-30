@@ -31,92 +31,86 @@ def get_user_option():
             print("\nERROR: Enter a 1 or 2")
             continue
         else:
-            print("YaY! Good input")
             break
     return user_option
 
-def login_user(u_name, u_pass):
+def login_user():
 # - validate username and password combination in the users.txt file
     #open the users files
     user_file = open("users.txt", "r")
     user_found = False
 
-    #read the lines from the file
-    for line in user_file:
-        credentials = line.split(", ")
-        #compare username and password for a match
-        if u_name == credentials[0] and u_pass == credentials[1].rstrip():
-            user_found = True
+    while True:
+        #If user chose 1, ask for user name and password and
+        user_name = input("Please enter your user name: ")
+        user_pass = input("Please enter your password: ")
+
+        for line in user_file:
+            credentials = line.split(", ")
+            #compare username and password for a match
+            if user_name == credentials[0] and user_pass == credentials[1].rstrip():
+                user_found = True
+                break
+
+        if user_found:
+            # - if valid then move on to prompt for student data
+            print(f"User {user_name} successfully logged in!\n")
             break
-    return user_found
+        else:
+            # - if not valid combination reprompt the user. 
+            print(f"User {user_name} not found!\n")
 
-def main():
-    print_main_menu()
-    #prompt and get the option the user selected
-    user_option = get_user_option()
+        #read the lines from the file
+        
+def create_user():
+    while True:
+        user_name = validate_username_or_password("Please enter your username: (4 - 12) characters: ", 4, 12)
+        user_pass = validate_username_or_password("Please enter your password: (6 - 16) characters: ", 6, 16)
 
-    if user_option == "1":
-        while True:
-            #If user chose 1, ask for user name and password and
-            user_name = input("Please enter your user name: ")
-            user_pass = input("Please enter your password: ")
+        try:
+            user_file = open("users.txt", "a")
+            user_file.write(f"{user_name}, {user_pass}\n")
+        except:
+            print("Error creating user.\n")
+            continue
+        else:
+            print(f"User {user_name} created")
+        finally:
+            user_file.close()
+        return
 
-            user_logged_in = login_user(user_name, user_pass)
 
-            if user_logged_in:
-                # - if valid then move on to prompt for student data
-                print(f"User {user_name} successfully logged in!\n")
-                break
-            else:
-                # - if not valid combination reprompt the user. 
-                print(f"User {user_name} not found!\n")
-    
-    #If user chose 2, ask for user name and password and
-    elif user_option == "2":
-        while True:
-            #If user chose 2, ask for user name and password and
-            user_name = input("Please enter your user name (4 - 12 characters): ")
-            user_pass = input("Please enter your password: (6 - 16) characters: ")
+def validate_username_or_password(prompt, min_length, max_length):
+    while True:
+        user_input = input(prompt)
+        input_length = len(user_input)
 
-            #get username and password length
-            user_name_length = len(user_name)
-            password_length = len(user_pass)
-            
-            # - validate username and password length. If valid, write to users.txt file
-            # 4 <= user_mame_length >= 12
-            if (user_name_length >= 4 and user_name_length <= 12) and (password_length >= 6 and password_length <= 16):
-                #write user and pass to the file
-                user_file = open("users.txt", "a")
-                user_file.write(f"{user_name}, {user_pass}\n")
-                user_file.close()
-                break
-            else:
-                print("ERROR: Incorrect username or password length.\n")
+        if (input_length >= min_length and input_length <= max_length):
+            break
+        else:
+            print("ERROR: input length invalid.\n")
+    return user_input 
 
-    print("Ask user for student data")
-    #Create 3 empty list for student name, scores, letter grades
-    number_students = int(validate_number("How many students do you have?"))
-    student_name = []
-    student_score = []
-    student_grade = []
+def get_letter_grade(grade):
+    if grade >= 90:
+        return "A"
+    elif grade >= 80:
+        return "B"
+    elif grade >= 70:
+        return "C"
+    elif grade >= 60:
+        return "D"
+    else:
+        return "F"
+
+def load_student_scores(number_students):
+    student_name, student_score, student_grade = [], [], []
     for x in range (number_students):
         student_name.append(input("What is the name of your student? "))
         student_score.append(validate_number("What is the grade of your student (percent)? "))
+        student_grade.append(get_letter_grade(student_score[x]))
 
     print("\n")
-
-    for grade in student_score:
-        if grade >= 90:
-            student_grade.append("A")
-        elif grade >= 80:
-            student_grade.append("B")
-        elif grade >= 70:
-            student_grade.append("C")
-        elif grade >= 60:
-            student_grade.append("D")
-        else:
-            student_grade.append("F")
-
     class_total = 0
 
     for x in range (number_students):
@@ -125,5 +119,21 @@ def main():
 
     class_average = class_total / number_students
     print(f"Class average = {class_average}%")
+
+def main():
+    print_main_menu()
+    #prompt and get the option the user selected
+    user_option = get_user_option()
+
+    if user_option == "1":
+        login_user()
+    
+    #If user chose 2, ask for user name and password and
+    elif user_option == "2":
+        create_user()
+
+    #Create 3 empty list for student name, scores, letter grades
+    number_students = int(validate_number("How many students do you have? "))
+    load_student_scores(number_students)
 
 main()
